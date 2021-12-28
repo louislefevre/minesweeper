@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TableRow
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.minesweeper.app.R
 import com.minesweeper.app.databinding.FragmentGameBinding
+import com.minesweeper.app.game.MineGridAdapter
+import com.minesweeper.app.game.MinesweeperGame
 
 class GameFragment : Fragment() {
 
@@ -24,18 +24,10 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupBoardTable(navArgs.rows, navArgs.columns)
-    }
 
-    private fun setupBoardTable(rows: Int, columns: Int) {
-        for (j in 0 until rows) {
-            val row = layoutInflater.inflate(R.layout.board_row, null) as TableRow
-
-            for (i in 0 until columns) {
-                row.addView(layoutInflater.inflate(R.layout.board_tile, null) as ImageButton)
-            }
-
-            binding.tlBoard.addView(row)
+        val game = MinesweeperGame(10)
+        binding.rvBoard.adapter = MineGridAdapter(game.mineGrid.tiles) {
+            Toast.makeText(requireContext(), "Cell clicked", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -6,37 +6,15 @@
                                                    android:layout_height="match_parent"
                                                    tools:context=".ui.fragments.GameFragment">
 
-    <com.otaliastudios.zoom.ZoomLayout
-        android:id="@+id/game_zoom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/grey"
-        android:scrollbars="vertical|horizontal"
-        app:hasClickableChildren="true"
-        app:horizontalPanEnabled="true"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvBoard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:maxZoom="3.0"
-        app:maxZoomType="zoom"
-        app:minZoom="1.0"
-        app:minZoomType="zoom"
-        app:overPinchable="true"
-        app:overScrollHorizontal="true"
-        app:overScrollVertical="true"
-        app:verticalPanEnabled="true"
-        app:zoomEnabled="true">
-
-        <TableLayout
-            android:id="@+id/tlBoard"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </com.otaliastudios.zoom.ZoomLayout>
+        app:spanCount="10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
