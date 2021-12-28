@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   tools:context=".ui.fragments.MenuFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glVerticalLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="80dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glVerticalRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="80dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glHorizontalTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="160dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glHorizontalBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="160dp" />
+
+    <Button
+        android:id="@+id/btEasyDifficulty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty_easy"
+        app:layout_constraintBottom_toTopOf="@+id/btNormalDifficulty"
+        app:layout_constraintEnd_toStartOf="@+id/glVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/glVerticalLeft"
+        app:layout_constraintTop_toTopOf="@+id/glHorizontalTop" />
+
+    <Button
+        android:id="@+id/btNormalDifficulty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty_normal"
+        app:layout_constraintBottom_toTopOf="@+id/btHardDifficulty"
+        app:layout_constraintEnd_toStartOf="@+id/glVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/glVerticalLeft"
+        app:layout_constraintTop_toBottomOf="@+id/btEasyDifficulty" />
+
+    <Button
+        android:id="@+id/btHardDifficulty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/difficulty_hard"
+        app:layout_constraintBottom_toTopOf="@+id/glHorizontalBottom"
+        app:layout_constraintEnd_toStartOf="@+id/glVerticalRight"
+        app:layout_constraintStart_toStartOf="@+id/glVerticalLeft"
+        app:layout_constraintTop_toBottomOf="@+id/btNormalDifficulty" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
