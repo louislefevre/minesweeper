@@ -1,34 +1,36 @@
-package com.minesweeper.app.game
+package com.minesweeper.app.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.minesweeper.app.R
+import com.minesweeper.app.game.Grid
+import com.minesweeper.app.game.Tile
 
-
-class MineGridAdapter(
-    private val tiles: List<Tile>,
+class GridAdapter(
+    private var grid: Grid,
     private val onTileClicked: (Tile) -> Unit
-) : RecyclerView.Adapter<MineGridAdapter.TileViewHolder>() {
+) : RecyclerView.Adapter<GridAdapter.TileViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TileViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.board_tile, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.tile, parent, false)
         return TileViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: TileViewHolder, position: Int) {
-        holder.bind(tiles[position])
+        holder.bind(grid.tileAt(position))
         holder.setIsRecyclable(false)
     }
 
     override fun getItemCount(): Int {
-        return tiles.size
+        return grid.size
     }
 
     inner class TileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(tile: Tile) {
             itemView.apply {
+                setBackgroundResource(tile.getTileDrawable())
                 setOnClickListener {
                     onTileClicked(tile)
                 }

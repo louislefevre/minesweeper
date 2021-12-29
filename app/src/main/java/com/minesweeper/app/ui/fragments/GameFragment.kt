@@ -8,12 +8,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.minesweeper.app.databinding.FragmentGameBinding
-import com.minesweeper.app.game.MineGridAdapter
-import com.minesweeper.app.game.MinesweeperGame
+import com.minesweeper.app.adapters.GridAdapter
+import com.minesweeper.app.game.Game
 
 class GameFragment : Fragment() {
 
     private lateinit var binding: FragmentGameBinding
+    private lateinit var gridAdapter: GridAdapter
+    private lateinit var game: Game
     private val navArgs: GameFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -25,9 +27,16 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val game = MinesweeperGame(10)
-        binding.rvBoard.adapter = MineGridAdapter(game.mineGrid.tiles) {
-            Toast.makeText(requireContext(), "Cell clicked", Toast.LENGTH_SHORT).show()
+        // TODO: Replace parameters with navArgs values
+        game = Game(10, 10, 10)
+        gridAdapter = GridAdapter(game.grid) {
+            onTileClick()
         }
+
+        binding.rvBoard.adapter = gridAdapter
+    }
+
+    private fun onTileClick() {
+        Toast.makeText(requireContext(), "Cell clicked", Toast.LENGTH_SHORT).show()
     }
 }
