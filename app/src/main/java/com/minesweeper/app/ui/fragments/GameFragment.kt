@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.minesweeper.app.databinding.FragmentGameBinding
 import com.minesweeper.app.adapters.GridAdapter
+import com.minesweeper.app.databinding.FragmentGameBinding
 import com.minesweeper.app.game.Game
 
 class GameFragment : Fragment() {
@@ -33,7 +33,15 @@ class GameFragment : Fragment() {
             onTileClick()
         }
 
-        binding.rvBoard.adapter = gridAdapter
+        binding.apply {
+            rvBoard.adapter = gridAdapter
+            ibReset.setOnClickListener { newGame() }
+        }
+    }
+
+    private fun newGame() {
+        game.generateNewGrid()
+        gridAdapter.setTiles(game.grid)
     }
 
     private fun onTileClick() {

@@ -1,5 +1,6 @@
 package com.minesweeper.app.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,12 @@ class GridAdapter(
 
     override fun getItemCount(): Int {
         return grid.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setTiles(grid: Grid) {
+        this.grid = grid
+        notifyDataSetChanged()
     }
 
     inner class TileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

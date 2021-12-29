@@ -5,10 +5,15 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     val grid = Grid(rows, columns)
 
     init {
-        generateNewGrid()
+        generateGrid()
     }
 
     fun generateNewGrid() {
+        grid.clearTiles()
+        generateGrid()
+    }
+
+    private fun generateGrid() {
         val totalMines = if (mines > grid.size) grid.size else mines
         var minesPlaced = 0
 
