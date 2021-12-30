@@ -1,8 +1,15 @@
 package com.minesweeper.app.game
 
+import com.google.common.base.Stopwatch
+import java.util.concurrent.TimeUnit
+
 class Game(private val rows: Int, private val columns: Int, private val mines: Int) {
 
+    private val timer = Stopwatch.createUnstarted()
+
     val grid = Grid(rows, columns)
+    val elapsedTime
+        get() = timer.elapsed(TimeUnit.MILLISECONDS)
     val isGameWon
         get() = gridIsRevealed()
     var isGameOver = false
@@ -17,17 +24,23 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     fun generateNewGrid() {
         isGameOver = false
         isClearMode = true
+        timer.reset()
         grid.clearTiles()
         generateGrid()
     }
 
     fun handleTileClick(tile: Tile) {
         if (!isGameOver && !isGameWon && isClearMode) {
+            if (!timer.isRunning) {
+                timer.start()
+            }
+
             clearTile(tile)
         }
     }
 
     fun revealAllTiles() {
+        timer.stop()
         grid.allTiles().forEach {
             it.isRevealed = true
         }
