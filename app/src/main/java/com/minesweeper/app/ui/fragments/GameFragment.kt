@@ -47,10 +47,15 @@ class GameFragment : Fragment() {
 
     private fun onTileClick(tile: Tile) {
         game.handleTileClick(tile)
+
         if (game.isGameOver) {
             Toast.makeText(requireContext(), "Game Over", Toast.LENGTH_SHORT).show()
             game.revealAllTiles()
+        } else if (game.isGameWon) {
+            Toast.makeText(requireContext(), "Game Won", Toast.LENGTH_SHORT).show()
+            game.revealAllTiles()
         }
+
         gridAdapter.updateGrid(game.grid)
     }
 }

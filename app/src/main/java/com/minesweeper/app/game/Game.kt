@@ -2,10 +2,13 @@ package com.minesweeper.app.game
 
 class Game(private val rows: Int, private val columns: Int, private val mines: Int) {
 
-    private var isClearMode = true
+    val grid = Grid(rows, columns)
+    val isGameWon
+        get() = gridIsRevealed()
     var isGameOver = false
         private set
-    val grid = Grid(rows, columns)
+    var isClearMode = true
+        private set
 
     init {
         generateGrid()
@@ -19,7 +22,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     }
 
     fun handleTileClick(tile: Tile) {
-        if (!isGameOver && isClearMode) {
+        if (!isGameOver && !isGameWon && isClearMode) {
             clearTile(tile)
         }
     }
@@ -93,6 +96,12 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
             }
 
             toClear.forEach { it.isRevealed = true }
+        }
+    }
+
+    private fun gridIsRevealed(): Boolean {
+        return grid.allTiles().none {
+            it.value != Tile.BOMB && it.value != Tile.BLANK && !it.isRevealed
         }
     }
 }
