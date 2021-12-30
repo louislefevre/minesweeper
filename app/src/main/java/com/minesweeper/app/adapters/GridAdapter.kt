@@ -11,7 +11,8 @@ import com.minesweeper.app.game.Tile
 
 class GridAdapter(
     private var grid: Grid,
-    private val onTileClicked: (Tile) -> Unit
+    private val onTileClicked: (Tile) -> Unit,
+    private val onTileLongClicked: (Tile) -> Unit
 ) : RecyclerView.Adapter<GridAdapter.TileViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TileViewHolder {
@@ -39,11 +40,19 @@ class GridAdapter(
             itemView.apply {
                 if (tile.isRevealed) {
                     setBackgroundResource(tile.getTileDrawable())
-                }
-                else {
-                    setBackgroundResource(R.drawable.ic_tile_hidden)
+                } else {
+                    setBackgroundResource(
+                        if (tile.isFlagged) R.drawable.ic_tile_flag
+                        else R.drawable.ic_tile_hidden
+                    )
+
                     setOnClickListener {
                         onTileClicked(tile)
+                    }
+
+                    setOnLongClickListener {
+                        onTileLongClicked(tile)
+                        true
                     }
                 }
             }

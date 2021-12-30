@@ -26,6 +26,7 @@ class GameFragment : Fragment() {
     private val timerThread: Runnable = object : Runnable {
         override fun run() {
             binding.tvTimer.text = formatTime(game.elapsedTime)
+            binding.tvFlagsRemaining.text = game.flagsRemaining.toString()
             timerHandler.postDelayed(this, 100);
         }
     }
@@ -41,9 +42,7 @@ class GameFragment : Fragment() {
 
         // TODO: Replace parameters with navArgs values
         game = Game(10, 10, 10)
-        gridAdapter = GridAdapter(game.grid) {
-            onTileClick(it)
-        }
+        gridAdapter = GridAdapter(game.grid, { onTileClick(it) }, { onTileLongClick(it) })
 
         binding.apply {
             rvBoard.adapter = gridAdapter
@@ -55,12 +54,20 @@ class GameFragment : Fragment() {
 
     private fun newGame() {
         game.generateNewGrid()
-        gridAdapter.updateGrid(game.grid)
+        updateGameStatus()
     }
 
     private fun onTileClick(tile: Tile) {
         game.handleTileClick(tile)
+        updateGameStatus()
+    }
 
+    private fun onTileLongClick(tile: Tile) {
+        game.handleTileLongClick(tile)
+        updateGameStatus()
+    }
+
+    private fun updateGameStatus() {
         if (game.isGameOver) {
             Toast.makeText(requireContext(), "Game Over", Toast.LENGTH_SHORT).show()
             game.revealAllTiles()
@@ -68,7 +75,6 @@ class GameFragment : Fragment() {
             Toast.makeText(requireContext(), "Game Won", Toast.LENGTH_SHORT).show()
             game.revealAllTiles()
         }
-
         gridAdapter.updateGrid(game.grid)
     }
 

@@ -6,15 +6,24 @@ import java.util.concurrent.TimeUnit
 class Game(private val rows: Int, private val columns: Int, private val mines: Int) {
 
     private val timer = Stopwatch.createUnstarted()
-
-    val grid = Grid(rows, columns)
     val elapsedTime
         get() = timer.elapsed(TimeUnit.MILLISECONDS)
-    val isGameWon
-        get() = gridIsRevealed()
+
+    val grid = Grid(rows, columns)
+
+    var flagCount = 0
+        private set
+    val flagsRemaining
+        get() = mines - flagCount
+
     var isGameOver = false
         private set
+    val isGameWon
+        get() = gridIsRevealed()
+
     var isClearMode = true
+        private set
+    var isFlagMode = false
         private set
 
     init {
@@ -22,6 +31,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     }
 
     fun generateNewGrid() {
+        flagCount = 0
         isGameOver = false
         isClearMode = true
         timer.reset()
@@ -30,13 +40,23 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     }
 
     fun handleTileClick(tile: Tile) {
-        if (!isGameOver && !isGameWon && isClearMode) {
+        if (!isGameOver && !isGameWon) {
             if (!timer.isRunning) {
                 timer.start()
             }
 
-            clearTile(tile)
+            if (isClearMode && !tile.isFlagged) {
+                clearTile(tile)
+            } else if (isFlagMode) {
+                toggleTileFlag(tile)
+            }
         }
+    }
+
+    fun handleTileLongClick(tile: Tile) {
+        toggleMode()
+        handleTileClick(tile)
+        toggleMode()
     }
 
     fun revealAllTiles() {
@@ -44,6 +64,11 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
         grid.allTiles().forEach {
             it.isRevealed = true
         }
+    }
+
+    fun toggleMode() {
+        isClearMode = !isClearMode
+        isFlagMode = !isFlagMode
     }
 
     private fun generateGrid() {
@@ -108,7 +133,23 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
                 toClear.add(nextTile)
             }
 
-            toClear.forEach { it.isRevealed = true }
+            toClear.forEach {
+                if (!it.isFlagged) {
+                    it.isRevealed = true
+                }
+            }
+        }
+    }
+
+    private fun toggleTileFlag(tile: Tile) {
+        if (!tile.isRevealed) {
+            if (tile.isFlagged) {
+                tile.isFlagged = false
+                flagCount--
+            } else if (flagsRemaining > 0) {
+                tile.isFlagged = true
+                flagCount++
+            }
         }
     }
 
