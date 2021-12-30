@@ -29,7 +29,7 @@ class GridAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setTiles(grid: Grid) {
+    fun updateGrid(grid: Grid) {
         this.grid = grid
         notifyDataSetChanged()
     }
@@ -37,9 +37,14 @@ class GridAdapter(
     inner class TileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(tile: Tile) {
             itemView.apply {
-                setBackgroundResource(tile.getTileDrawable())
-                setOnClickListener {
-                    onTileClicked(tile)
+                if (tile.isRevealed) {
+                    setBackgroundResource(tile.getTileDrawable())
+                }
+                else {
+                    setBackgroundResource(R.drawable.ic_tile_hidden)
+                    setOnClickListener {
+                        onTileClicked(tile)
+                    }
                 }
             }
         }

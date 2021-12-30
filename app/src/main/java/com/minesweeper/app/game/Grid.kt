@@ -26,6 +26,21 @@ class Grid(private val rows: Int, private val columns: Int) {
         return tileAt(x, y)
     }
 
+    fun indexOfTile(tile: Tile): Int {
+        val (x, y) = cordsOfTile(tile)
+        return columns * y + x
+    }
+
+    fun cordsOfTile(tile: Tile): Pair<Int, Int> {
+        tiles.forEachIndexed { y, list ->
+            if (list.contains(tile)) {
+                val x = list.indexOf(tile)
+                return Pair(x, y)
+            }
+        }
+        return Pair(-1, -1)
+    }
+
     fun adjacentTiles(x: Int, y: Int): List<Tile> {
         return listOfNotNull(
             tileAtOrNull(x - 1, y),
@@ -37,6 +52,21 @@ class Grid(private val rows: Int, private val columns: Int) {
             tileAtOrNull(x, y + 1),
             tileAtOrNull(x + 1, y + 1),
         )
+    }
+
+    fun adjacentTiles(tile: Tile): List<Tile> {
+        val (x, y) = cordsOfTile(tile)
+        return adjacentTiles(x, y)
+    }
+
+    fun allTiles(): List<Tile> {
+        val all = mutableListOf<Tile>()
+        tiles.forEach {
+            it.forEach { tile ->
+                all.add(tile)
+            }
+        }
+        return all
     }
 
     fun clearTiles() {

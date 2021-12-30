@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.minesweeper.app.adapters.GridAdapter
 import com.minesweeper.app.databinding.FragmentGameBinding
 import com.minesweeper.app.game.Game
+import com.minesweeper.app.game.Tile
 
 class GameFragment : Fragment() {
 
@@ -30,7 +31,7 @@ class GameFragment : Fragment() {
         // TODO: Replace parameters with navArgs values
         game = Game(10, 10, 10)
         gridAdapter = GridAdapter(game.grid) {
-            onTileClick()
+            onTileClick(it)
         }
 
         binding.apply {
@@ -41,10 +42,15 @@ class GameFragment : Fragment() {
 
     private fun newGame() {
         game.generateNewGrid()
-        gridAdapter.setTiles(game.grid)
+        gridAdapter.updateGrid(game.grid)
     }
 
-    private fun onTileClick() {
-        Toast.makeText(requireContext(), "Cell clicked", Toast.LENGTH_SHORT).show()
+    private fun onTileClick(tile: Tile) {
+        game.handleTileClick(tile)
+        if (game.isGameOver) {
+            Toast.makeText(requireContext(), "Game Over", Toast.LENGTH_SHORT).show()
+            game.revealAllTiles()
+        }
+        gridAdapter.updateGrid(game.grid)
     }
 }

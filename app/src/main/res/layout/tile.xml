@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="32dp"
              android:layout_height="32dp"
-             xmlns:tools="http://schemas.android.com/tools"
              android:background="@android:color/transparent"
              android:scaleType="centerCrop"
              tools:src="@drawable/ic_tile_hidden" />

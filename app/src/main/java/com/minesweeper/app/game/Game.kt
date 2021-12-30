@@ -2,6 +2,9 @@ package com.minesweeper.app.game
 
 class Game(private val rows: Int, private val columns: Int, private val mines: Int) {
 
+    private var isClearMode = true
+    var isGameOver = false
+        private set
     val grid = Grid(rows, columns)
 
     init {
@@ -9,8 +12,22 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     }
 
     fun generateNewGrid() {
+        isGameOver = false
+        isClearMode = true
         grid.clearTiles()
         generateGrid()
+    }
+
+    fun handleTileClick(tile: Tile) {
+        if (!isGameOver && isClearMode) {
+            clearTile(tile)
+        }
+    }
+
+    fun revealAllTiles() {
+        grid.allTiles().forEach {
+            it.isRevealed = true
+        }
     }
 
     private fun generateGrid() {
@@ -44,6 +61,38 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
                     }
                 }
             }
+        }
+    }
+
+    private fun clearTile(tile: Tile) {
+        tile.isRevealed = true
+
+        if (tile.value == Tile.BOMB) {
+            isGameOver = true
+        } else if (tile.value == Tile.BLANK) {
+            val toClear = mutableListOf<Tile>()
+            val toCheckAdj = mutableListOf(tile)
+
+            while (toCheckAdj.size > 0) {
+                val nextTile = toCheckAdj[0]
+
+                for (adjTile in grid.adjacentTiles(nextTile)) {
+                    if (adjTile.value == Tile.BLANK) {
+                        if (!toClear.contains(adjTile) && !toCheckAdj.contains(adjTile)) {
+                            toCheckAdj.add(adjTile)
+                        }
+                    } else {
+                        if (!toClear.contains(adjTile)) {
+                            toClear.add(adjTile)
+                        }
+                    }
+                }
+
+                toCheckAdj.remove(nextTile)
+                toClear.add(nextTile)
+            }
+
+            toClear.forEach { it.isRevealed = true }
         }
     }
 }
