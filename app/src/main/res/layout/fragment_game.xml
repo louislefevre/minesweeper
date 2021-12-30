@@ -35,8 +35,20 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_replay_circle"
         app:layout_constraintBottom_toTopOf="@+id/glTopBar"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/ibToggleMode"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ibToggleMode"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_mine"
+        app:layout_constraintBottom_toTopOf="@+id/glTopBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ibReset"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

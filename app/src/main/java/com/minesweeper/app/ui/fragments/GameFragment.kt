@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.minesweeper.app.R
 import com.minesweeper.app.adapters.GridAdapter
 import com.minesweeper.app.databinding.FragmentGameBinding
 import com.minesweeper.app.game.Game
@@ -47,6 +48,7 @@ class GameFragment : Fragment() {
         binding.apply {
             rvBoard.adapter = gridAdapter
             ibReset.setOnClickListener { newGame() }
+            ibToggleMode.setOnClickListener { toggleMode() }
         }
 
         timerHandler.postDelayed(timerThread, 100);
@@ -55,6 +57,14 @@ class GameFragment : Fragment() {
     private fun newGame() {
         game.generateNewGrid()
         updateGameStatus()
+    }
+
+    private fun toggleMode() {
+        game.toggleMode()
+        binding.ibToggleMode.setImageResource(
+            if (game.isFlagMode) R.drawable.ic_flag
+            else R.drawable.ic_mine
+        )
     }
 
     private fun onTileClick(tile: Tile) {
