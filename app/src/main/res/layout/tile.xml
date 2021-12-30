@@ -6,5 +6,5 @@
              android:background="@android:color/transparent"
              android:scaleType="centerCrop"
              android:soundEffectsEnabled="false"
-             tools:ignore="ContentDescription"
-             tools:src="@drawable/ic_tile_hidden" />
+             android:src="@drawable/ic_tile_hidden"
+             tools:ignore="ContentDescription" />

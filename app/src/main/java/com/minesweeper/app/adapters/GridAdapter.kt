@@ -2,8 +2,8 @@ package com.minesweeper.app.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.minesweeper.app.R
 import com.minesweeper.app.game.Grid
@@ -17,7 +17,7 @@ class GridAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TileViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.tile, parent, false)
-        return TileViewHolder(itemView)
+        return TileViewHolder(itemView as ImageView)
     }
 
     override fun onBindViewHolder(holder: TileViewHolder, position: Int) {
@@ -35,13 +35,13 @@ class GridAdapter(
         notifyDataSetChanged()
     }
 
-    inner class TileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class TileViewHolder(private val imageView: ImageView) : RecyclerView.ViewHolder(imageView) {
         fun bind(tile: Tile) {
-            itemView.apply {
+            imageView.apply {
                 if (tile.isRevealed) {
-                    setBackgroundResource(tile.getTileDrawable())
+                    setImageResource(tile.getTileDrawable())
                 } else {
-                    setBackgroundResource(
+                    setImageResource(
                         if (tile.isFlagged) R.drawable.ic_tile_flag
                         else R.drawable.ic_tile_hidden
                     )
