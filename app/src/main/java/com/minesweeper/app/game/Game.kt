@@ -11,30 +11,18 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
 
     val grid = Grid(rows, columns)
 
-    var flagCount = 0
-        private set
-    val flagsRemaining
-        get() = mines - flagCount
+    var flagsRemaining = mines
 
-    var isFirstMoveMade = false
-        private set
-    var isGameOver = false
-        private set
     val isGameWon
         get() = gridIsRevealed()
-
+    var isGameOver = false
+        private set
     var isClearMode = true
         private set
     var isFlagMode = false
         private set
-
-    fun newGame() {
-        flagCount = 0
-        isFirstMoveMade = false
-        isGameOver = false
-        timer.reset()
-        grid.clearTiles()
-    }
+    var isFirstMoveMade = false
+        private set
 
     fun handleTileClick(tile: Tile) {
         if (!isGameOver && !isGameWon) {
@@ -150,10 +138,10 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
         if (!tile.isRevealed) {
             if (tile.isFlagged) {
                 tile.isFlagged = false
-                flagCount--
+                flagsRemaining++
             } else if (flagsRemaining > 0) {
                 tile.isFlagged = true
-                flagCount++
+                flagsRemaining--
             }
         }
     }

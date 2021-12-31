@@ -41,21 +41,25 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO: Replace parameters with navArgs values
-        game = Game(10, 10, 10)
+        game = getNewGame()
         gridAdapter = GridAdapter(game.grid, { onTileClick(it) }, { onTileLongClick(it) })
 
         binding.apply {
             rvBoard.adapter = gridAdapter
-            ibReset.setOnClickListener { newGame() }
+            ibReset.setOnClickListener { startNewGame() }
             ibToggleMode.setOnClickListener { toggleMode() }
         }
 
         timerHandler.postDelayed(timerThread, 100);
     }
 
-    private fun newGame() {
-        game.newGame()
+    private fun getNewGame(): Game {
+        // TODO: Replace parameters with navArgs values
+        return Game(10, 10, 10)
+    }
+
+    private fun startNewGame() {
+        game = getNewGame()
         updateGameStatus()
     }
 
