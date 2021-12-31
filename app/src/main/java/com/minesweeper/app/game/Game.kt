@@ -48,9 +48,11 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
         toggleMode()
     }
 
-    fun revealAllTiles() {
+    fun revealMineTiles() {
         timer.stop()
-        grid.allTiles().forEach {
+        grid.allTiles().filter {
+            it.value == Tile.MINE
+        }.forEach {
             it.isRevealed = true
         }
     }

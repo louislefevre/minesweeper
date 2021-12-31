@@ -16,8 +16,11 @@ class Tile(var value: Int) {
     fun getTileDrawable(): Int {
         return when (value) {
             MINE -> {
-                if (isDetonated) R.drawable.ic_tile_mine_detonated
-                else R.drawable.ic_tile_mine
+                when {
+                    isDetonated -> R.drawable.ic_tile_mine_detonated
+                    isFlagged -> R.drawable.ic_tile_mine_defused
+                    else -> R.drawable.ic_tile_mine
+                }
             }
             BLANK -> R.drawable.ic_tile_0
             1 -> R.drawable.ic_tile_1

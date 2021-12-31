@@ -99,10 +99,10 @@ class GameFragment : Fragment() {
     private fun updateGameStatus() {
         if (game.isGameOver) {
             Toast.makeText(requireContext(), "Game Over", Toast.LENGTH_SHORT).show()
-            game.revealAllTiles()
+            game.revealMineTiles()
         } else if (game.isGameWon) {
             Toast.makeText(requireContext(), "Game Won", Toast.LENGTH_SHORT).show()
-            game.revealAllTiles()
+            game.revealMineTiles()
         }
         gridAdapter.updateGrid(game.grid)
     }
