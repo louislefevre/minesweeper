@@ -11,10 +11,14 @@ class Tile(var value: Int) {
 
     var isFlagged = false
     var isRevealed = false
+    var isDetonated = false
 
     fun getTileDrawable(): Int {
         return when (value) {
-            BOMB -> R.drawable.ic_tile_mine
+            BOMB -> {
+                if (isDetonated) R.drawable.ic_tile_mine_detonated
+                else R.drawable.ic_tile_mine
+            }
             BLANK -> R.drawable.ic_tile_0
             1 -> R.drawable.ic_tile_1
             2 -> R.drawable.ic_tile_2

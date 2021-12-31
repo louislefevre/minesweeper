@@ -102,6 +102,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
         tile.isRevealed = true
 
         if (tile.value == Tile.BOMB) {
+            tile.isDetonated = true
             isGameOver = true
         } else if (tile.value == Tile.BLANK) {
             val toClear = mutableListOf<Tile>()
