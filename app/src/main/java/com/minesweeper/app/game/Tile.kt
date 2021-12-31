@@ -9,6 +9,8 @@ class Tile(var value: Int) {
         const val BLANK = 0
     }
 
+    val isMine get() = value == MINE
+    val isBlank get() = value == BLANK
     var isFlagged = false
     var isRevealed = false
     var isDetonated = false

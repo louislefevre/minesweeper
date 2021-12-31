@@ -51,7 +51,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     fun revealMineTiles() {
         timer.stop()
         grid.allTiles().filter {
-            it.value == Tile.MINE
+            it.isMine
         }.forEach {
             it.isRevealed = true
         }
@@ -71,7 +71,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
             val x = (0..columns).random()
             val tile = grid.tileAtOrNull(x, y)
 
-            if (tile?.value == Tile.BLANK) {
+            if (tile?.isBlank == true) {
                 if (safeTile != null && safeTile === tile)
                     continue
 
@@ -82,12 +82,12 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
 
         for (x in 0 until columns) {
             for (y in 0 until rows) {
-                if (grid.tileAt(x, y).value != Tile.MINE) {
+                if (!grid.tileAt(x, y).isMine) {
                     val adjTiles = grid.adjacentTiles(x, y)
                     var minesCount = 0
 
                     for (tile in adjTiles) {
-                        if (tile.value == Tile.MINE) {
+                        if (tile.isMine) {
                             minesCount++
                         }
                     }
@@ -103,10 +103,10 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     private fun clearTile(tile: Tile) {
         tile.isRevealed = true
 
-        if (tile.value == Tile.MINE) {
+        if (tile.isMine) {
             tile.isDetonated = true
             isGameOver = true
-        } else if (tile.value == Tile.BLANK) {
+        } else if (tile.isBlank) {
             val toClear = mutableListOf<Tile>()
             val toCheckAdj = mutableListOf(tile)
 
@@ -114,7 +114,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
                 val nextTile = toCheckAdj[0]
 
                 for (adjTile in grid.adjacentTiles(nextTile)) {
-                    if (adjTile.value == Tile.BLANK) {
+                    if (adjTile.isBlank) {
                         if (!toClear.contains(adjTile) && !toCheckAdj.contains(adjTile)) {
                             toCheckAdj.add(adjTile)
                         }
@@ -151,7 +151,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
 
     private fun gridIsRevealed(): Boolean {
         return isFirstMoveMade && grid.allTiles().none {
-            it.value != Tile.MINE && it.value != Tile.BLANK && !it.isRevealed
+            !it.isMine && !it.isBlank && !it.isRevealed
         }
     }
 }
