@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import com.minesweeper.app.R
 import com.minesweeper.app.adapters.GridAdapter
 import com.minesweeper.app.databinding.FragmentGameBinding
@@ -45,7 +46,11 @@ class GameFragment : Fragment() {
         gridAdapter = GridAdapter(game.grid, { onTileClick(it) }, { onTileLongClick(it) })
 
         binding.apply {
-            rvBoard.adapter = gridAdapter
+            rvGrid.apply {
+                layoutManager = GridLayoutManager(requireContext(), navArgs.columns)
+                adapter = gridAdapter
+            }
+
             ibReset.setOnClickListener { startNewGame() }
             ibToggleMode.setOnClickListener { toggleMode() }
         }
@@ -54,8 +59,7 @@ class GameFragment : Fragment() {
     }
 
     private fun getNewGame(): Game {
-        // TODO: Replace parameters with navArgs values
-        return Game(10, 10, 10)
+        return Game(navArgs.rows, navArgs.columns, navArgs.mines)
     }
 
     private fun startNewGame() {
