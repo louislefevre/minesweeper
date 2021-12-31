@@ -3,6 +3,12 @@
     <string name="app_name">Minesweeper</string>
     <string name="start_time">00:00</string>
 
+    <!-- Dialogs -->
+    <string name="restart_dialog_title">Restart game?</string>
+    <string name="restart_dialog_body">You will lose your current progress.</string>
+    <string name="restart_dialog_accept">Restart</string>
+    <string name="restart_dialog_decline">@android:string/cancel</string>
+
     <!-- Difficulty Levels -->
     <string name="difficulty_easy">Easy</string>
     <string name="difficulty_normal">Normal</string>

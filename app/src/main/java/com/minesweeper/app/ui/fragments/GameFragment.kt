@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.minesweeper.app.R
 import com.minesweeper.app.adapters.GridAdapter
 import com.minesweeper.app.databinding.FragmentGameBinding
@@ -63,8 +64,18 @@ class GameFragment : Fragment() {
     }
 
     private fun startNewGame() {
-        game = getNewGame()
-        updateGameStatus()
+        val startGame = { game = getNewGame(); updateGameStatus() }
+
+        if (game.isGameOver || game.isGameWon) {
+            startGame()
+        } else if (game.isFirstMoveMade) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.restart_dialog_title)
+                .setMessage(R.string.restart_dialog_body)
+                .setNegativeButton(R.string.restart_dialog_decline, null)
+                .setPositiveButton(R.string.restart_dialog_accept) { _, _ -> startGame() }
+                .show()
+        }
     }
 
     private fun toggleMode() {
