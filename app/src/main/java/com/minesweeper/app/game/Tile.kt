@@ -5,7 +5,7 @@ import com.minesweeper.app.R
 class Tile(var value: Int) {
 
     companion object {
-        const val BOMB = -1
+        const val MINE = -1
         const val BLANK = 0
     }
 
@@ -15,7 +15,7 @@ class Tile(var value: Int) {
 
     fun getTileDrawable(): Int {
         return when (value) {
-            BOMB -> {
+            MINE -> {
                 if (isDetonated) R.drawable.ic_tile_mine_detonated
                 else R.drawable.ic_tile_mine
             }

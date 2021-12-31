@@ -73,19 +73,19 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
                 if (safeTile != null && safeTile === tile)
                     continue
 
-                grid.updateTile(x, y, Tile.BOMB)
+                grid.updateTile(x, y, Tile.MINE)
                 minesPlaced++
             }
         }
 
         for (x in 0 until columns) {
             for (y in 0 until rows) {
-                if (grid.tileAt(x, y).value != Tile.BOMB) {
+                if (grid.tileAt(x, y).value != Tile.MINE) {
                     val adjTiles = grid.adjacentTiles(x, y)
                     var minesCount = 0
 
                     for (tile in adjTiles) {
-                        if (tile.value == Tile.BOMB) {
+                        if (tile.value == Tile.MINE) {
                             minesCount++
                         }
                     }
@@ -101,7 +101,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     private fun clearTile(tile: Tile) {
         tile.isRevealed = true
 
-        if (tile.value == Tile.BOMB) {
+        if (tile.value == Tile.MINE) {
             tile.isDetonated = true
             isGameOver = true
         } else if (tile.value == Tile.BLANK) {
@@ -149,7 +149,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
 
     private fun gridIsRevealed(): Boolean {
         return isFirstMoveMade && grid.allTiles().none {
-            it.value != Tile.BOMB && it.value != Tile.BLANK && !it.isRevealed
+            it.value != Tile.MINE && it.value != Tile.BLANK && !it.isRevealed
         }
     }
 }
