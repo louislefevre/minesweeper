@@ -2,7 +2,7 @@ package com.minesweeper.app.game
 
 import com.minesweeper.app.R
 
-class Tile(val value: Int) {
+class Tile(var value: Int) {
 
     companion object {
         const val BOMB = -1

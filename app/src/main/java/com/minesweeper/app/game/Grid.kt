@@ -9,6 +9,10 @@ class Grid(private val rows: Int, private val columns: Int) {
         tiles[y][x] = tile
     }
 
+    fun updateTile(x: Int, y: Int, newValue: Int) {
+        tiles[y][x].value = newValue
+    }
+
     fun tileAt(x: Int, y: Int): Tile {
         return tiles[y][x]
     }

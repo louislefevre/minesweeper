@@ -55,7 +55,7 @@ class GameFragment : Fragment() {
     }
 
     private fun newGame() {
-        game.generateNewGrid()
+        game.newGame()
         updateGameStatus()
     }
 

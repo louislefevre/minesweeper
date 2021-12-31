@@ -16,6 +16,8 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     val flagsRemaining
         get() = mines - flagCount
 
+    var isFirstMoveMade = false
+        private set
     var isGameOver = false
         private set
     val isGameWon
@@ -26,17 +28,12 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     var isFlagMode = false
         private set
 
-    init {
-        generateGrid()
-    }
-
-    fun generateNewGrid() {
+    fun newGame() {
         flagCount = 0
+        isFirstMoveMade = false
         isGameOver = false
-        isClearMode = true
         timer.reset()
         grid.clearTiles()
-        generateGrid()
     }
 
     fun handleTileClick(tile: Tile) {
@@ -46,6 +43,10 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
             }
 
             if (isClearMode && !tile.isFlagged) {
+                if (!isFirstMoveMade) {
+                    generateGrid(safeTile = tile)
+                    isFirstMoveMade = true
+                }
                 clearTile(tile)
             } else if (isFlagMode) {
                 toggleTileFlag(tile)
@@ -71,16 +72,20 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
         isFlagMode = !isFlagMode
     }
 
-    private fun generateGrid() {
-        val totalMines = if (mines > grid.size) grid.size else mines
+    private fun generateGrid(safeTile: Tile? = null) {
+        val totalMines = if (mines >= grid.size) grid.size - 1 else mines
         var minesPlaced = 0
 
         while (minesPlaced < totalMines) {
             val y = (0..rows).random()
             val x = (0..columns).random()
+            val tile = grid.tileAtOrNull(x, y)
 
-            if (grid.tileAtOrNull(x, y)?.value == Tile.BLANK) {
-                grid.setTile(x, y, Tile(Tile.BOMB))
+            if (tile?.value == Tile.BLANK) {
+                if (safeTile != null && safeTile === tile)
+                    continue
+
+                grid.updateTile(x, y, Tile.BOMB)
                 minesPlaced++
             }
         }
@@ -98,7 +103,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
                     }
 
                     if (minesCount > 0) {
-                        grid.setTile(x, y, Tile(minesCount))
+                        grid.updateTile(x, y, minesCount)
                     }
                 }
             }
@@ -154,7 +159,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     }
 
     private fun gridIsRevealed(): Boolean {
-        return grid.allTiles().none {
+        return isFirstMoveMade && grid.allTiles().none {
             it.value != Tile.BOMB && it.value != Tile.BLANK && !it.isRevealed
         }
     }
