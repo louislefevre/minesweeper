@@ -29,7 +29,7 @@ class GameFragment : Fragment() {
     private val timerThread: Runnable = object : Runnable {
         override fun run() {
             binding.tvTimer.text = formatTime(game.elapsedTime)
-            binding.tvFlagsRemaining.text = game.flagsRemaining.toString()
+            binding.tvFlagsRemaining.text = formatFlags(game.flagsRemaining)
             timerHandler.postDelayed(this, 100);
         }
     }
@@ -117,5 +117,9 @@ class GameFragment : Fragment() {
         val minutes = TimeUnit.MILLISECONDS.toMinutes(millis)
         val seconds = TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(minutes)
         return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    private fun formatFlags(remainingFlags: Int): String {
+        return String.format("%03d", remainingFlags)
     }
 }
