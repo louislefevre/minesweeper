@@ -26,14 +26,11 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
 
     fun handleTileClick(tile: Tile) {
         if (!isGameOver && !isGameWon) {
-            if (!timer.isRunning) {
-                timer.start()
-            }
-
             if (isClearMode && !tile.isFlagged) {
                 if (!isFirstMoveMade) {
                     generateGrid(safeTile = tile)
                     isFirstMoveMade = true
+                    timer.start()
                 }
                 clearTile(tile)
             } else if (isFlagMode) {
@@ -49,7 +46,6 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     }
 
     fun revealMineTiles() {
-        timer.stop()
         grid.allTiles().filter {
             it.isMine
         }.forEach {
@@ -106,6 +102,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
         if (tile.isMine) {
             tile.isDetonated = true
             isGameOver = true
+            timer.stop()
         } else if (tile.isBlank) {
             val toClear = mutableListOf<Tile>()
             val toCheckAdj = mutableListOf(tile)
