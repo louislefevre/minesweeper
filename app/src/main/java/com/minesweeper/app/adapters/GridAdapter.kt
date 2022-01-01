@@ -12,7 +12,8 @@ import com.minesweeper.app.game.Tile
 class GridAdapter(
     private var grid: Grid,
     private val onTileClicked: (Tile) -> Unit,
-    private val onTileLongClicked: (Tile) -> Unit
+    private val onTileLongClicked: (Tile) -> Unit,
+    var itemsClickable: Boolean = true
 ) : RecyclerView.Adapter<GridAdapter.TileViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TileViewHolder {
@@ -46,13 +47,9 @@ class GridAdapter(
                         else R.drawable.ic_tile_hidden
                     )
 
-                    setOnClickListener {
-                        onTileClicked(tile)
-                    }
-
-                    setOnLongClickListener {
-                        onTileLongClicked(tile)
-                        true
+                    if (itemsClickable) {
+                        setOnClickListener { onTileClicked(tile) }
+                        setOnLongClickListener { onTileLongClicked(tile); true }
                     }
                 }
             }

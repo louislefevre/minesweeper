@@ -64,7 +64,11 @@ class GameFragment : Fragment() {
     }
 
     private fun startNewGame() {
-        val startGame = { game = getNewGame(); updateGameStatus() }
+        val startGame = {
+            game = getNewGame()
+            updateGameStatus()
+            gridAdapter.itemsClickable = true
+        }
 
         if (game.isGameOver || game.isGameWon) {
             startGame()
@@ -100,9 +104,11 @@ class GameFragment : Fragment() {
         if (game.isGameOver) {
             Toast.makeText(requireContext(), "Game Over", Toast.LENGTH_SHORT).show()
             game.revealMineTiles()
+            gridAdapter.itemsClickable = false
         } else if (game.isGameWon) {
             Toast.makeText(requireContext(), "Game Won", Toast.LENGTH_SHORT).show()
             game.revealMineTiles()
+            gridAdapter.itemsClickable = false
         }
         gridAdapter.updateGrid(game.grid)
     }
