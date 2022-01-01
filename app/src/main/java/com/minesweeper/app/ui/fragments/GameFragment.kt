@@ -70,15 +70,15 @@ class GameFragment : Fragment() {
             gridAdapter.itemsClickable = true
         }
 
-        if (game.isGameOver || game.isGameWon) {
-            startGame()
-        } else if (game.isFirstMoveMade) {
+        if (game.isFirstMoveMade) {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.restart_dialog_title)
                 .setMessage(R.string.restart_dialog_body)
                 .setNegativeButton(R.string.restart_dialog_decline, null)
                 .setPositiveButton(R.string.restart_dialog_accept) { _, _ -> startGame() }
                 .show()
+        } else {
+            startGame()
         }
     }
 
