@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.minesweeper.app.R
 import com.minesweeper.app.databinding.ActivityMainBinding
 
@@ -19,5 +20,9 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fcvFragmentHost) as NavHostFragment
         navController = navHostFragment.navController
+
+        binding.apply {
+            bnvNavBar.setupWithNavController(navController)
+        }
     }
 }

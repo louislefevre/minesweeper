@@ -3,22 +3,34 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_graph"
-            app:startDestination="@id/menuFragment">
+            app:startDestination="@id/navMenuFragment">
 
     <fragment
-        android:id="@+id/menuFragment"
+        android:id="@+id/navSettingsFragment"
+        android:name="com.minesweeper.app.ui.fragments.SettingsFragment"
+        android:label="@string/nav_settings_title"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navMenuFragment"
         android:name="com.minesweeper.app.ui.fragments.MenuFragment"
-        android:label="fragment_menu"
+        android:label="@string/nav_menu_title"
         tools:layout="@layout/fragment_menu">
         <action
             android:id="@+id/action_menuFragment_to_gameFragment"
-            app:destination="@id/gameFragment" />
+            app:destination="@id/navGameFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/gameFragment"
+        android:id="@+id/navStatisticsFragment"
+        android:name="com.minesweeper.app.ui.fragments.StatisticsFragment"
+        android:label="@string/nav_statistics_title"
+        tools:layout="@layout/fragment_statistics" />
+
+    <fragment
+        android:id="@+id/navGameFragment"
         android:name="com.minesweeper.app.ui.fragments.GameFragment"
-        android:label="fragment_game"
+        android:label="@string/nav_game_title"
         tools:layout="@layout/fragment_game">
         <argument
             android:name="rows"

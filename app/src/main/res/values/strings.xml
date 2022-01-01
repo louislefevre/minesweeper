@@ -3,6 +3,12 @@
     <string name="app_name">Minesweeper</string>
     <string name="start_time">00:00</string>
 
+    <!-- Navigation -->
+    <string name="nav_statistics_title">Statistics</string>
+    <string name="nav_menu_title">Menu</string>
+    <string name="nav_settings_title">Settings</string>
+    <string name="nav_game_title">Minesweeper</string>
+
     <!-- Dialogs -->
     <string name="restart_dialog_title">Restart game?</string>
     <string name="restart_dialog_body">You will lose your current progress.</string>
