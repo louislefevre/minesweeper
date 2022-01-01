@@ -3,6 +3,18 @@ package com.minesweeper.app.game
 import com.google.common.base.Stopwatch
 import java.util.concurrent.TimeUnit
 
+enum class GameMode {
+    CLEAR_MODE,
+    FLAG_MODE
+}
+
+enum class GameState {
+    NOT_STARTED,
+    PLAYING,
+    WON,
+    LOST
+}
+
 class Game(private val rows: Int, private val columns: Int, private val mines: Int) {
 
     private val timer = Stopwatch.createUnstarted()
@@ -13,27 +25,27 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
 
     var flagsRemaining = mines
 
-    val isGameWon
-        get() = gridIsRevealed()
-    var isGameOver = false
+    var state = GameState.NOT_STARTED
         private set
-    var isClearMode = true
-        private set
-    var isFlagMode = false
-        private set
-    var isFirstMoveMade = false
+
+    var mode = GameMode.CLEAR_MODE
         private set
 
     fun handleTileClick(tile: Tile) {
-        if (!isGameOver && !isGameWon) {
-            if (isClearMode && !tile.isFlagged) {
-                if (!isFirstMoveMade) {
+        if (state != GameState.LOST && state != GameState.WON) {
+            if (mode == GameMode.CLEAR_MODE && !tile.isFlagged) {
+                if (state != GameState.PLAYING) {
                     generateGrid(safeTile = tile)
-                    isFirstMoveMade = true
+                    state = GameState.PLAYING
                     timer.start()
                 }
+
                 clearTile(tile)
-            } else if (isFlagMode) {
+                if (gridIsRevealed()) {
+                    state = GameState.WON
+                    timer.stop()
+                }
+            } else if (mode == GameMode.FLAG_MODE) {
                 toggleTileFlag(tile)
             }
         }
@@ -54,8 +66,10 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     }
 
     fun toggleMode() {
-        isClearMode = !isClearMode
-        isFlagMode = !isFlagMode
+        mode = when (mode) {
+            GameMode.CLEAR_MODE -> GameMode.FLAG_MODE
+            GameMode.FLAG_MODE -> GameMode.CLEAR_MODE
+        }
     }
 
     private fun generateGrid(safeTile: Tile? = null) {
@@ -101,7 +115,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
 
         if (tile.isMine) {
             tile.isDetonated = true
-            isGameOver = true
+            state = GameState.LOST
             timer.stop()
         } else if (tile.isBlank) {
             val toClear = mutableListOf<Tile>()
@@ -147,7 +161,7 @@ class Game(private val rows: Int, private val columns: Int, private val mines: I
     }
 
     private fun gridIsRevealed(): Boolean {
-        return isFirstMoveMade && grid.allTiles().none {
+        return state == GameState.PLAYING && grid.allTiles().none {
             !it.isMine && !it.isBlank && !it.isRevealed
         }
     }
