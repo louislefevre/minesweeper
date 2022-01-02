@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -25,7 +25,7 @@ class GameFragment : Fragment() {
     private lateinit var gridAdapter: GridAdapter
 
     private val navArgs: GameFragmentArgs by navArgs()
-    private val gameViewModel: GameViewModel by activityViewModels {
+    private val gameViewModel: GameViewModel by viewModels {
         GameViewModelFactory(navArgs.rows, navArgs.columns, navArgs.mines)
     }
 
