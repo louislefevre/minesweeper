@@ -17,16 +17,22 @@ import com.minesweeper.app.game.GameMode
 import com.minesweeper.app.game.GameState
 import com.minesweeper.app.ui.viewmodels.GameViewModel
 import com.minesweeper.app.ui.viewmodels.GameViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class GameFragment : Fragment() {
 
     private lateinit var binding: FragmentGameBinding
     private lateinit var gridAdapter: GridAdapter
 
     private val navArgs: GameFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var gameViewModelFactory: GameViewModelFactory
     private val gameViewModel: GameViewModel by viewModels {
-        GameViewModelFactory(navArgs.rows, navArgs.columns, navArgs.mines)
+        GameViewModel.provideFactory(gameViewModelFactory, navArgs.rows, navArgs.columns, navArgs.mines)
     }
 
     private var firstMoveMade = false

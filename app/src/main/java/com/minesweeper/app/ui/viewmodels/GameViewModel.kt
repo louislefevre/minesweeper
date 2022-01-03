@@ -1,14 +1,28 @@
 package com.minesweeper.app.ui.viewmodels
 
-import androidx.lifecycle.*
-import com.minesweeper.app.game.*
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.minesweeper.app.data.SessionRepository
+import com.minesweeper.app.game.Game
+import com.minesweeper.app.game.GameMode
+import com.minesweeper.app.game.GameState
+import com.minesweeper.app.game.Grid
+import com.minesweeper.app.game.Tile
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class GameViewModel(
-    private val rows: Int,
-    private val columns: Int,
-    private val mines: Int
+class GameViewModel @AssistedInject constructor(
+    private val repository: SessionRepository,
+    @Assisted("rows") private val rows: Int,
+    @Assisted("columns") private val columns: Int,
+    @Assisted("mines") private val mines: Int
 ) : ViewModel() {
 
     private lateinit var game: Game
@@ -40,6 +54,7 @@ class GameViewModel(
     }
 
     fun revealAllMines() {
+        Log.d("Test", "End game")
         game.revealMineTiles()
         updateGameState()
     }
@@ -89,18 +104,30 @@ class GameViewModel(
             }
         }
     }
+
+    companion object {
+        fun provideFactory(
+            assistedFactory: GameViewModelFactory,
+            rows: Int,
+            columns: Int,
+            mines: Int
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
+                    return assistedFactory.create(rows, columns, mines) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
+    }
 }
 
-class GameViewModelFactory(
-    private val rows: Int,
-    private val columns: Int,
-    private val mines: Int
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(GameViewModel::class.java)) {
-            return GameViewModel(rows, columns, mines) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
+@AssistedFactory
+interface GameViewModelFactory {
+    fun create(
+        @Assisted("rows") rows: Int,
+        @Assisted("columns") columns: Int,
+        @Assisted("mines") mines: Int
+    ): GameViewModel
 }
