@@ -80,8 +80,8 @@ class GameFragment : Fragment() {
         gameViewModel.gameState.observe(viewLifecycleOwner) {
             when (it) {
                 GameState.PLAYING -> firstMoveMade = true
-                GameState.WON -> endGame("Game Won!")
-                GameState.LOST -> endGame("Game Lost!")
+                GameState.WON -> endGame(true, "Game Won!")
+                GameState.LOST -> endGame(false, "Game Lost!")
                 else -> Unit
             }
         }
@@ -116,10 +116,11 @@ class GameFragment : Fragment() {
         gameViewModel.startNewGame()
     }
 
-    private fun endGame(text: String) {
+    private fun endGame(isWin: Boolean, text: String) {
         firstMoveMade = false
         gridAdapter.itemsClickable = false
         gameViewModel.revealAllMines()
+        gameViewModel.storeGameResult(isWin)
         Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
     }
 

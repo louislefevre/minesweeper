@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.minesweeper.app.data.Session
 import com.minesweeper.app.data.SessionRepository
 import com.minesweeper.app.game.Game
 import com.minesweeper.app.game.GameMode
@@ -17,6 +18,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class GameViewModel @AssistedInject constructor(
     private val repository: SessionRepository,
@@ -57,6 +59,20 @@ class GameViewModel @AssistedInject constructor(
         Log.d("Test", "End game")
         game.revealMineTiles()
         updateGameState()
+    }
+
+    fun storeGameResult(isWin: Boolean) {
+        viewModelScope.launch {
+            repository.insert(
+                Session(
+                    grid = "${rows}x${columns}",
+                    isWin = isWin,
+                    datePlayed = Calendar.getInstance().time,
+                    elapsedTime = timeElapsed.value ?: 0L,
+                    totalMines = mines
+                )
+            )
+        }
     }
 
     fun handleTileClick(tile: Tile) {
