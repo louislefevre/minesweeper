@@ -9,6 +9,9 @@ import com.minesweeper.app.R
 import com.minesweeper.app.game.Grid
 import com.minesweeper.app.game.Tile
 
+// TODO: Change parent class to ListAdapter, use submitList for updating grid, and implement a diff callback
+//       for updating the grid in an optimised way.
+
 class GridAdapter(
     private var grid: Grid,
     private val onTileClicked: (Tile) -> Unit,
